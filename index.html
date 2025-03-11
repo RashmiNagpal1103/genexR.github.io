@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genexlove: Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+        body {
+            background: linear-gradient(135deg, #9325e6 0%, #dfaef6 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .background-text {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 72px;
+            color: rgba(0, 0, 0, 0.791);
+            font-weight: bold;
+            font-family: 'Dancing Script', cursive;
+            z-index: 0;
+            pointer-events: none;
+            white-space: nowrap;
+            text-align: center;
+            margin-top: 20px;
+            animation: fadeInOut 6s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            margin-top: 100px;
+        }
+
+        .card h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .form-control {
+            margin-bottom: 1rem;
+            border-radius: 30px;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+        }
+
+        .btn {
+            border-radius: 30px;
+            padding: 0.75rem;
+            font-size: 1rem;
+            background: #ff6f61;
+            border: none;
+            color: white;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #e55750;
+        }
+
+        .text-center a {
+            color: #ff6f61;
+            text-decoration: none;
+        }
+
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            border-radius: 30px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background-text">
+        Genexlove: Love, Reimagined
+    </div>
+
+    <div class="card">
+        <h2 id="formTitle">Login</h2>
+        
+        <div class="alert alert-danger" id="errorAlert" role="alert">
+            Invalid email or password.
+        </div>
+        
+        <div class="alert alert-success" id="successAlert" role="alert">
+            Registration successful! You can now log in.
+        </div>
+        
+        <!-- Login Form -->
+        <form id="loginForm">
+            <div class="form-group">
+                <input type="email" class="form-control" id="loginEmail" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="loginPassword" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <p class="text-center mt-3">Don't have an account? <a href="#" id="showSignup">Sign up here</a></p>
+        </form>
+        
+        <!-- Signup Form -->
+        <form id="signupForm" style="display: none;">
+            <div class="form-group">
+                <input type="text" class="form-control" id="firstName" placeholder="First Name" required>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="lastName" placeholder="Last Name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" id="signupEmail" placeholder="Email" required>
+                <small id="emailHelp" class="form-text text-muted">Please use your institution email.</small>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="signupPassword" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+            <p class="text-center mt-3">Already have an account? <a href="#" id="showLogin">Login here</a></p>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <!-- Custom JS for handling local storage -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // References to DOM elements
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const showSignup = document.getElementById('showSignup');
+            const showLogin = document.getElementById('showLogin');
+            const formTitle = document.getElementById('formTitle');
+            const errorAlert = document.getElementById('errorAlert');
+            const successAlert = document.getElementById('successAlert');
+            
+            // Toggle between login and signup forms
+            showSignup.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                formTitle.textContent = 'Sign Up';
+                errorAlert.style.display = 'none';
+                successAlert.style.display = 'none';
+            });
+            
+            showLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                signupForm.style.display = 'none';
+                loginForm.style.display = 'block';
+                formTitle.textContent = 'Login';
+                errorAlert.style.display = 'none';
+                successAlert.style.display = 'none';
+            });
+            
+            // Handle signup form submission
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                
+                // Simple validation for institutional email
+                // You can customize this regex for specific institutions
+                if (!email.endsWith('.edu') && !email.includes('@university') && !email.includes('@college')) {
+                    errorAlert.textContent = 'Please use an institutional email address.';
+                    errorAlert.style.display = 'block';
+                    return;
+                }
+                
+                // Get existing users or create empty array
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // Check if user already exists
+                const userExists = users.some(user => user.email === email);
+                
+                if (userExists) {
+                    errorAlert.textContent = 'An account with this email already exists.';
+                    errorAlert.style.display = 'block';
+                    return;
+                }
+                
+                // Add new user
+                const newUser = {
+                    firstName,
+                    lastName,
+                    email,
+                    password, // Note: In a real app, never store passwords in plain text
+                    dateCreated: new Date().toISOString()
+                };
+                
+                users.push(newUser);
+                
+                // Save updated users array
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Show success message and switch to login
+                successAlert.style.display = 'block';
+                signupForm.reset();
+                
+                // Switch to login form after a delay
+                setTimeout(() => {
+                    signupForm.style.display = 'none';
+                    loginForm.style.display = 'block';
+                    formTitle.textContent = 'Login';
+                }, 2000);
+            });
+            
+            // Handle login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                // Get users from localStorage
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // Find user with matching credentials
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    // Set current user in localStorage
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        loginTime: new Date().toISOString()
+                    }));
+                    
+                    // Redirect to dashboard or home page
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // Show error message
+                    errorAlert.textContent = 'Invalid email or password.';
+                    errorAlert.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
